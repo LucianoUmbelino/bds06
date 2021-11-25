@@ -21,6 +21,11 @@ public interface MovieRepository extends JpaRepository<Movie, Long>{
     Page<Movie> find(Genre genre, Pageable pageable);
 	
 	@Query("SELECT obj "
-		 + "FROM Movie obj JOIN FETCH obj.genre WHERE obj IN :movies")
+		 + "  FROM Movie obj "
+		 + "  JOIN FETCH obj.genre "
+		 + " WHERE obj IN :movies")
     List<Movie> findMoviesAndGenres(List<Movie> movies);
+	
+	
+	
 }
