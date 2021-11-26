@@ -27,10 +27,4 @@ public interface MovieRepository extends JpaRepository<Movie, Long>{
 		 + " WHERE obj IN :movies")
     List<Movie> findMoviesAndGenres(List<Movie> movies);
 	
-	@Query("SELECT obj "
-	  	 + "  FROM Review obj "
-	  	 + "  JOIN FETCH obj.user "
-	  	 + " WHERE obj.movie = :movie")
-    List<Review> findByMovie(Movie movie);
-	
 }
