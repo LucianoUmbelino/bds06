@@ -28,6 +28,9 @@ public class ReviewService {
 	@Autowired
 	private MovieRepository movieRepository;
 	
+	@Autowired
+	private AuthService authService;
+	
 	@Transactional(readOnly = true)
 	public Page<ReviewDTO> findAllPaged(Pageable pageable) {
 		Page<Review> list = repository.findAll(pageable);
@@ -52,5 +55,16 @@ public class ReviewService {
             throw new ResourceNotFoundException("Id not found " + movieId);
         }
     }
+
+	@Transactional
+	public ReviewDTO insert(ReviewDTO dto) {
+		Review entity = new Review();
+		entity.setText(dto.getText());
+		entity.setMovie(movieRepository.getOne(dto.getMovieId()));
+		entity.setUser(authService.authenticated());
+		entity =repository.save(entity);
+		
+		return new ReviewDTO(entity);
+	}
 	
 }

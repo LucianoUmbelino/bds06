@@ -39,6 +39,16 @@ public class ReviewController {
 		ReviewDTO dto = service.findById(id);
 		return ResponseEntity.ok().body(dto);
 	}
-
+	
+	@PreAuthorize("hasAnyRole('MEMBER')")
+	@PostMapping
+	public ResponseEntity<ReviewDTO> insert(@Valid @RequestBody ReviewDTO dto){
+		
+		dto = service.insert(dto);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(dto.getId()).toUri();
+		return ResponseEntity.created(uri).body(dto);
+		
+	}
 	
 }
